@@ -1,0 +1,38 @@
+{
+  "name": "birthday-app",
+  "version": "1.0.0",
+  "description": "Birthday celebration web application with authentication",
+  "main": "backend/src/server.js",
+  "scripts": {
+    "start": "node backend/src/server.js",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "nodemon backend/src/server.js",
+    "dev:frontend": "node frontend/server.js",
+    "setup-db": "node backend/src/config/setupDatabase.js"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "postgresql",
+    "jwt",
+    "birthday"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.18.2",
+    "express-session": "^1.19.0",
+    "express-validator": "^7.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.11.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.35.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "nodemon": "^3.0.2"
+  }
+}

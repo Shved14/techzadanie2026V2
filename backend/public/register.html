@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация - Система поздравлений</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <!-- Первый этап регистрации -->
+            <div id="step1" class="card fade-in">
+                <h1 class="auth-title">Регистрация</h1>
+                <p style="text-align: center; margin-bottom: 2rem; color: var(--text-secondary);">
+                    Шаг 1 из 2: Создание аккаунта
+                </p>
+                
+                <form id="registerFormStep1">
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            class="form-input" 
+                            placeholder="Введите ваш email"
+                            required
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password" class="form-label">Пароль</label>
+                        <div style="position: relative;">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                class="form-input" 
+                                placeholder="Придумайте пароль (минимум 6 символов)"
+                                required
+                            >
+                            <button 
+                                type="button" 
+                                id="togglePassword"
+                                style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer;"
+                                onclick="togglePassword('password', 'togglePassword')"
+                            >
+                                👁️‍🗨️
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmPassword" class="form-label">Подтвердите пароль</label>
+                        <div style="position: relative;">
+                            <input 
+                                type="password" 
+                                id="confirmPassword" 
+                                name="confirmPassword" 
+                                class="form-input" 
+                                placeholder="Введите пароль еще раз"
+                                required
+                            >
+                            <button 
+                                type="button" 
+                                id="toggleConfirmPassword"
+                                style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer;"
+                                onclick="togglePassword('confirmPassword', 'toggleConfirmPassword')"
+                            >
+                                👁️‍🗨️
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" id="step1Button" class="btn btn-primary btn-block">
+                        Далее
+                    </button>
+                </form>
+                
+                <div class="auth-links">
+                    <p>Уже есть аккаунт? <a href="/login">Войти</a></p>
+                </div>
+            </div>
+            
+            <!-- Второй этап регистрации -->
+            <div id="step2" class="card fade-in" style="display: none;">
+                <h1 class="auth-title">Регистрация</h1>
+                <p style="text-align: center; margin-bottom: 2rem; color: var(--text-secondary);">
+                    Шаг 2 из 2: Личная информация
+                </p>
+                
+                <form id="registerFormStep2">
+                    <div class="form-group">
+                        <label for="fullName" class="form-label">Полное имя (ФИО)</label>
+                        <input 
+                            type="text" 
+                            id="fullName" 
+                            name="fullName" 
+                            class="form-input" 
+                            placeholder="Введите ваше полное имя"
+                            required
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="birthDate" class="form-label">Дата рождения</label>
+                        <input 
+                            type="date" 
+                            id="birthDate" 
+                            name="birthDate" 
+                            class="form-input" 
+                            required
+                        >
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                        <button type="button" id="backButton" class="btn btn-secondary" style="flex: 1;">
+                            Назад
+                        </button>
+                        <button type="submit" id="step2Button" class="btn btn-primary" style="flex: 1;">
+                            Зарегистрироваться
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/common.js"></script>
+    <script>
+        // Данные первого этапа
+        let step1Data = null;
+        
+        // Обработчик первого этапа регистрации
+        document.getElementById('registerFormStep1').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Валидация
+            if (!isValidEmail(email)) {
+                showMessage('Введите корректный email адрес', 'error');
+                return;
+            }
+            
+            if (!isValidPassword(password)) {
+                showMessage('Пароль должен содержать минимум 6 символов', 'error');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showMessage('Пароли не совпадают', 'error');
+                return;
+            }
+            
+            // Показываем загрузку
+            setButtonLoading('step1Button', true);
+            
+            try {
+                const response = await apiRequest('/auth/register-step1', {
+                    method: 'POST',
+                    body: JSON.stringify({ email, password })
+                });
+                
+                // Сохраняем данные первого этапа
+                step1Data = { email, password };
+                
+                // Показываем сообщение об успехе
+                showMessage('Первый этап пройден!', 'success');
+                
+                // Переходим ко второму этапу
+                setTimeout(() => {
+                    document.getElementById('step1').style.display = 'none';
+                    document.getElementById('step2').style.display = 'block';
+                }, 500);
+                
+            } catch (error) {
+                showMessage(error.message || 'Ошибка при регистрации', 'error');
+            } finally {
+                setButtonLoading('step1Button', false);
+            }
+        });
+        
+        // Обработчик второго этапа регистрации
+        document.getElementById('registerFormStep2').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const fullName = document.getElementById('fullName').value;
+            const birthDate = document.getElementById('birthDate').value;
+            
+            // Валидация
+            if (!fullName.trim()) {
+                showMessage('Введите полное имя', 'error');
+                return;
+            }
+            
+            if (!birthDate) {
+                showMessage('Выберите дату рождения', 'error');
+                return;
+            }
+            
+            // Проверяем возраст (должно быть не менее 13 лет)
+            const birthDateObj = new Date(birthDate);
+            const today = new Date();
+            const age = today.getFullYear() - birthDateObj.getFullYear();
+            const monthDiff = today.getMonth() - birthDateObj.getMonth();
+            
+            if (age < 13 || (age === 13 && monthDiff < 0)) {
+                showMessage('Возраст должен быть не менее 13 лет', 'error');
+                return;
+            }
+            
+            // Показываем загрузку
+            setButtonLoading('step2Button', true);
+            
+            try {
+                const response = await apiRequest('/auth/register-step2', {
+                    method: 'POST',
+                    body: JSON.stringify({ fullName, birthDate })
+                });
+                
+                // Сохраняем токен
+                setAuthToken(response.token);
+                
+                // Показываем сообщение об успехе
+                showMessage('Регистрация успешно завершена!', 'success');
+                
+                // Перенаправляем в личный кабинет
+                setTimeout(() => {
+                    redirect('/dashboard');
+                }, 1000);
+                
+            } catch (error) {
+                showMessage(error.message || 'Ошибка при регистрации', 'error');
+            } finally {
+                setButtonLoading('step2Button', false);
+            }
+        });
+        
+        // Кнопка "Назад"
+        document.getElementById('backButton').addEventListener('click', function() {
+            document.getElementById('step2').style.display = 'none';
+            document.getElementById('step1').style.display = 'block';
+        });
+        
+        // Проверяем, не авторизован ли уже пользователь
+        if (isAuthenticated()) {
+            redirect('/dashboard');
+        }
+        
+        // Устанавливаем максимальную дату рождения (13 лет назад)
+        const today = new Date();
+        const maxDate = new Date(today.getFullYear() - 13, today.getMonth(), today.getDate());
+        document.getElementById('birthDate').max = maxDate.toISOString().split('T')[0];
+    </script>
+</body>
+</html>

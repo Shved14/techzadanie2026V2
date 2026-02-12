@@ -1,0 +1,453 @@
+/* Основные стили для корпоративного медицинского SaaS приложения */
+
+/* CSS переменные для цветовой схемы */
+:root {
+  --primary-color: #082567;
+  --background-color: #f4f6fb;
+  --accent-color: #e6b65c;
+  --white-color: #ffffff;
+  --text-color: #333333;
+  --text-secondary: #666666;
+  --border-color: #e1e5eb;
+  --error-color: #dc3545;
+  --success-color: #28a745;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Сброс стилей и базовые настройки */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Контейнер */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Хедер */
+.header {
+  background-color: var(--white-color);
+  box-shadow: var(--shadow-sm);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+/* Формы и карточки */
+.card {
+  background-color: var(--white-color);
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: var(--white-color);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(8, 37, 103, 0.1);
+}
+
+.form-input::placeholder {
+  color: #999999;
+}
+
+/* Кнопки */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 120px;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: var(--white-color);
+}
+
+.btn-primary:hover {
+  background-color: #061a4d;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+}
+
+.btn-secondary:hover {
+  background-color: var(--primary-color);
+  color: var(--white-color);
+}
+
+.btn-accent {
+  background-color: var(--accent-color);
+  color: var(--white-color);
+}
+
+.btn-accent:hover {
+  background-color: #d4a54a;
+  transform: translateY(-1px);
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* Сообщения об ошибках и успехе */
+.message {
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.message-error {
+  background-color: #f8d7da;
+  color: var(--error-color);
+  border: 1px solid #f5c6cb;
+}
+
+.message-success {
+  background-color: #d4edda;
+  color: var(--success-color);
+  border: 1px solid #c3e6cb;
+}
+
+/* Сетки */
+.grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.grid-cols-1 {
+  grid-template-columns: 1fr;
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 768px) {
+  .grid-cols-2,
+  .grid-cols-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Страницы авторизации */
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+}
+
+.auth-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--primary-color);
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.auth-links {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.auth-links a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-links a:hover {
+  text-decoration: underline;
+}
+
+/* Личный кабинет */
+.dashboard-header {
+  background: linear-gradient(135deg, var(--primary-color), #0a2f7a);
+  color: var(--white-color);
+  padding: 3rem 0;
+  margin-bottom: 2rem;
+}
+
+.user-info {
+  text-align: center;
+}
+
+.user-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: var(--accent-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--white-color);
+}
+
+.user-name {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.user-email {
+  opacity: 0.9;
+  margin-bottom: 0.5rem;
+}
+
+.user-birthdate {
+  opacity: 0.8;
+}
+
+/* Статистические карточки */
+.stats-card {
+  background: linear-gradient(135deg, var(--white-color), #f8f9fa);
+  border-left: 4px solid var(--accent-color);
+  padding: 1.5rem;
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+}
+
+.stats-card:hover {
+  transform: translateX(5px);
+}
+
+.stats-title {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stats-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+/* Модальное окно поздравления */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.birthday-modal {
+  background-color: var(--white-color);
+  border-radius: 16px;
+  padding: 3rem;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  transform: scale(0.8);
+  transition: transform 0.3s ease;
+  position: relative;
+  box-shadow: var(--shadow-lg);
+}
+
+.modal-overlay.active .birthday-modal {
+  transform: scale(1);
+}
+
+.birthday-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-20px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
+}
+
+.birthday-title {
+  color: var(--primary-color);
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.birthday-message {
+  color: var(--text-color);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.birthday-close {
+  background-color: var(--accent-color);
+  color: var(--white-color);
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.birthday-close:hover {
+  background-color: #d4a54a;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 15px;
+  }
+  
+  .card {
+    padding: 1.5rem;
+  }
+  
+  .dashboard-header {
+    padding: 2rem 0;
+  }
+  
+  .birthday-modal {
+    padding: 2rem;
+  }
+  
+  .birthday-title {
+    font-size: 1.5rem;
+  }
+}
+
+/* Анимации */
+.fade-in {
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Скрытие элементов */
+.hidden {
+  display: none !important;
+}
+
+/* Загрузка */
+.loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--white-color);
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

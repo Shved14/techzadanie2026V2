@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход - Система поздравлений</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="card fade-in">
+                <h1 class="auth-title">Вход в систему</h1>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            class="form-input" 
+                            placeholder="Введите ваш email"
+                            required
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password" class="form-label">Пароль</label>
+                        <div style="position: relative;">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                class="form-input" 
+                                placeholder="Введите ваш пароль"
+                                required
+                            >
+                            <button 
+                                type="button" 
+                                id="togglePassword"
+                                style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer;"
+                                onclick="togglePassword('password', 'togglePassword')"
+                            >
+                                👁️‍🗨️
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" id="loginButton" class="btn btn-primary btn-block">
+                        Войти
+                    </button>
+                </form>
+                
+                <div class="auth-links">
+                    <p>Еще нет аккаунта? <a href="/register">Зарегистрироваться</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/common.js"></script>
+    <script>
+        // Обработчик формы входа
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Валидация
+            if (!isValidEmail(email)) {
+                showMessage('Введите корректный email адрес', 'error');
+                return;
+            }
+            
+            if (!isValidPassword(password)) {
+                showMessage('Пароль должен содержать минимум 6 символов', 'error');
+                return;
+            }
+            
+            // Показываем загрузку
+            setButtonLoading('loginButton', true);
+            
+            try {
+                const response = await apiRequest('/auth/login', {
+                    method: 'POST',
+                    body: JSON.stringify({ email, password })
+                });
+                
+                // Сохраняем токен
+                setAuthToken(response.token);
+                
+                // Показываем сообщение об успехе
+                showMessage('Вход выполнен успешно!', 'success');
+                
+                // Перенаправляем в личный кабинет
+                setTimeout(() => {
+                    redirect('/dashboard');
+                }, 1000);
+                
+            } catch (error) {
+                showMessage(error.message || 'Ошибка при входе', 'error');
+            } finally {
+                setButtonLoading('loginButton', false);
+            }
+        });
+        
+        // Проверяем, не авторизован ли уже пользователь
+        if (isAuthenticated()) {
+            redirect('/dashboard');
+        }
+    </script>
+</body>
+</html>

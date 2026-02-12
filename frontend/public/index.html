@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Медицинский портал</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <!-- Хедер с кнопками -->
+    <header class="main-header">
+        <div class="header-content">
+            <div class="logo">
+                <h1 onclick="redirect('/index.html')" style="cursor: pointer;">🏥 МедПортал</h1>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-header" id="loginBtn">Вход</button>
+                <button class="btn btn-header" id="logoutBtn" style="display: none;">Выход</button>
+                <button class="profile-icon" id="profileIcon" title="Личный кабинет">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Главный экран -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Современная медицина для вашего здоровья</h1>
+            <p class="hero-subtitle">
+                Передовые медицинские технологии, опытные специалисты и индивидуальный подход к каждому пациенту.
+                Ваше здоровье - наш приоритет.
+            </p>
+
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">🩺</div>
+                    <h3>Диагностика</h3>
+                    <p>Современное оборудование для точной диагностики заболеваний</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">💊</div>
+                    <h3>Лечение</h3>
+                    <p>Эффективные методики лечения под контролем опытных врачей</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🔬</div>
+                    <h3>Исследования</h3>
+                    <p>Научные исследования и инновации в медицине</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📋</div>
+                    <h3>Консультации</h3>
+                    <p>Онлайн-консультации с ведущими специалистами</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="/js/common.js"></script>
+    <script>
+        // Функция обновления кнопок в зависимости от авторизации
+        async function updateAuthButtons() {
+            const loginBtn = document.getElementById('loginBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const profileIcon = document.getElementById('profileIcon');
+
+            // Проверяем валидность токена
+            const isValid = await validateToken();
+
+            if (isValid) {
+                // Пользователь авторизован
+                loginBtn.style.display = 'none';
+                logoutBtn.style.display = 'block';
+            } else {
+                // Пользователь не авторизован
+                loginBtn.style.display = 'block';
+                logoutBtn.style.display = 'none';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Обновляем кнопки при загрузке страницы
+            updateAuthButtons();
+
+            // Кнопка "Вход"
+            document.getElementById('loginBtn').addEventListener('click', function () {
+                redirect('/login.html');
+            });
+
+            // Кнопка "Выход"
+            document.getElementById('logoutBtn').addEventListener('click', function () {
+                removeAuthToken();
+                showMessage('Вы вышли из аккаунта', 'success');
+                updateAuthButtons();
+            });
+
+            // Иконка личного кабинета
+            document.getElementById('profileIcon').addEventListener('click', async function () {
+                const isValid = await validateToken();
+                if (isValid) {
+                    redirect('/dashboard.html');
+                } else {
+                    redirect('/login.html');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход - МедПортал</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <!-- Хедер -->
+    <header class="main-header">
+        <div class="header-content">
+            <div class="logo">
+                <h1 onclick="redirect('/index.html')" style="cursor: pointer;">🏥 МедПортал</h1>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-header" id="loginBtn">Вход</button>
+                <button class="btn btn-header" id="logoutBtn" style="display: none;">Выход</button>
+                <button class="btn btn-header" onclick="redirect('/register.html')">Регистрация</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="card fade-in">
+                <h1 class="auth-title">Вход в систему</h1>
+
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" name="email" class="form-input" placeholder="Введите ваш email"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="form-label">Пароль</label>
+                        <div style="position: relative;">
+                            <input type="password" id="password" name="password" class="form-input"
+                                placeholder="Введите ваш пароль" required>
+                            <button type="button" id="togglePassword"
+                                style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 18px;"
+                                onclick="togglePasswordVisibility('password', 'togglePassword')">
+                                👁️
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="loginButton" class="btn btn-primary btn-block">
+                        Войти
+                    </button>
+                </form>
+
+                <div class="auth-links">
+                    <p>Еще нет аккаунта? <a href="/register.html">Зарегистрироваться</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/common.js"></script>
+    <script>
+        // Функция обновления кнопок в зависимости от авторизации
+        function updateAuthButtons() {
+            const loginBtn = document.getElementById('loginBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+
+            if (isAuthenticated()) {
+                // Пользователь авторизован
+                loginBtn.style.display = 'none';
+                logoutBtn.style.display = 'block';
+            } else {
+                // Пользователь не авторизован
+                loginBtn.style.display = 'block';
+                logoutBtn.style.display = 'none';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Обновляем кнопки при загрузке страницы
+            updateAuthButtons();
+
+            // Проверяем день рождения для авторизованных пользователей
+            if (isAuthenticated()) {
+                checkBirthday();
+            }
+
+            // Кнопка "Вход"
+            document.getElementById('loginBtn').addEventListener('click', function () {
+                redirect('/login.html');
+            });
+
+            // Кнопка "Выход"
+            document.getElementById('logoutBtn').addEventListener('click', function () {
+                removeAuthToken();
+                showMessage('Вы вышли из аккаунта', 'success');
+                updateAuthButtons();
+                redirect('/index.html');
+            });
+
+            // Проверяем, не авторизован ли уже пользователь
+            if (isAuthenticated()) {
+                redirect('/dashboard.html');
+            }
+        });
+
+        // Обработчик формы входа
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Валидация
+            if (!isValidEmail(email)) {
+                showMessage('Введите корректный email адрес', 'error');
+                return;
+            }
+
+            if (!isValidPassword(password)) {
+                showMessage('Пароль должен содержать минимум 6 символов', 'error');
+                return;
+            }
+
+            // Показываем загрузку
+            setButtonLoading('loginButton', true);
+
+            try {
+                const response = await apiRequest('/auth/login', {
+                    method: 'POST',
+                    body: JSON.stringify({ email, password })
+                });
+
+                // Сохраняем токен
+                setAuthToken(response.token);
+
+                // Показываем сообщение об успехе
+                showMessage('Вход выполнен успешно!', 'success');
+
+                // Перенаправляем в личный кабинет
+                setTimeout(() => {
+                    redirect('/dashboard.html');
+                }, 1000);
+
+            } catch (error) {
+                showMessage(error.message || 'Ошибка при входе', 'error');
+            } finally {
+                setButtonLoading('loginButton', false);
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        /* Стили для главной страницы в стиле медицинского SaaS */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f4f6fb;
+        }
+        
+        .main-container {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #e8f2ff 0%, #f4f6fb 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Снежинки */
+        .snowflakes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .snowflake {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1em;
+            animation: fall linear infinite;
+        }
+        
+        @keyframes fall {
+            from {
+                transform: translateY(-100vh);
+            }
+            to {
+                transform: translateY(100vh);
+            }
+        }
+        
+        /* Основной контент */
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            padding: 80px 20px;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .main-title {
+            font-size: 4rem;
+            font-weight: 700;
+            color: #082567;
+            line-height: 1.2;
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease;
+        }
+        
+        .research-button {
+            background: linear-gradient(135deg, #082567 0%, #1a4ba0 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(8, 37, 103, 0.3);
+            animation: fadeInUp 1s ease 0.3s;
+            animation-fill-mode: both;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .research-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(8, 37, 103, 0.4);
+        }
+        
+        /* График */
+        .chart-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 60px auto;
+            max-width: 800px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 1s ease 0.6s;
+            animation-fill-mode: both;
+        }
+        
+        .chart-title {
+            font-size: 1.3rem;
+            color: #082567;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .chart-bars {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            height: 200px;
+            margin-bottom: 20px;
+        }
+        
+        .chart-bar {
+            width: 60px;
+            background: linear-gradient(to top, #082567, #4a7bc8);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .chart-bar:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(8, 37, 103, 0.3);
+        }
+        
+        .chart-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: #666;
+            white-space: nowrap;
+        }
+        
+        /* EuGenius кнопка */
+        .eugeniuse-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #e6b65c;
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(230, 182, 92, 0.4);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .eugeniuse-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(230, 182, 92, 0.5);
+        }
+        
+        .eugeniuse-logo {
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #e6b65c;
+        }
+        
+        /* Кнопка личного кабинета */
+        .profile-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border: 2px solid #082567;
+            color: #082567;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .profile-button:hover {
+            background: #082567;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Модальное окно профиля */
+        .profile-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .profile-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .profile-content {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+        
+        .profile-modal.active .profile-content {
+            transform: scale(1);
+        }
+        
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #e6b65c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .profile-name {
+            font-size: 1.5rem;
+            color: #082567;
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-email {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        .profile-birthdate {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+        
+        .profile-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: #082567;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #061e4f;
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+            
+            .chart-container {
+                margin: 40px 20px;
+                padding: 20px;
+            }
+            
+            .chart-bars {
+                height: 150px;
+            }
+            
+            .chart-bar {
+                width: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Кнопка личного кабинета -->
+    <button class="profile-button" id="profileBtn">
+        <span id="profileBtnText">Личный кабинет</span>
+    </button>
+
+    <!-- Основной контейнер -->
+    <div class="main-container">
+        <!-- Снежинки -->
+        <div class="snowflakes" id="snowflakes"></div>
+        
+        <!-- Основной контент -->
+        <div class="hero-content">
+            <h1 class="main-title">МЫ В ТОП-2<br>СОЦИАЛЬНЫХ СЕТЕЙ, ГДЕ ОБЩАЮТСЯ ВРАЧИ*</h1>
+            <a href="/register" class="research-button">ПОЛНОЕ ИССЛЕДОВАНИЕ</a>
+            
+            <!-- График -->
+            <div class="chart-container">
+                <h3 class="chart-title">Оценка профессиональных и неспециализированных социальных сетей топ 10</h3>
+                <div class="chart-bars">
+                    <div class="chart-bar" style="height: 85%;">
+                        <span class="chart-label">Сеть 1</span>
+                    </div>
+                    <div class="chart-bar" style="height: 75%;">
+                        <span class="chart-label">Сеть 2</span>
+                    </div>
+                    <div class="chart-bar" style="height: 65%;">
+                        <span class="chart-label">Сеть 3</span>
+                    </div>
+                    <div class="chart-bar" style="height: 55%;">
+                        <span class="chart-label">Сеть 4</span>
+                    </div>
+                    <div class="chart-bar" style="height: 45%;">
+                        <span class="chart-label">Сеть 5</span>
+                    </div>
+                    <div class="chart-bar" style="height: 35%;">
+                        <span class="chart-label">Сеть 6</span>
+                    </div>
+                    <div class="chart-bar" style="height: 25%;">
+                        <span class="chart-label">Сеть 7</span>
+                    </div>
+                    <div class="chart-bar" style="height: 20%;">
+                        <span class="chart-label">Сеть 8</span>
+                    </div>
+                    <div class="chart-bar" style="height: 15%;">
+                        <span class="chart-label">Сеть 9</span>
+                    </div>
+                    <div class="chart-bar" style="height: 10%;">
+                        <span class="chart-label">Сеть 10</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- EuGenius кнопка -->
+    <button class="eugeniuse-button" id="eugeniuseBtn">
+        <div class="eugeniuse-logo">E</div>
+        <span>EuGenius</span>
+    </button>
+
+    <!-- Модальное окно профиля -->
+    <div class="profile-modal" id="profileModal">
+        <div class="profile-content">
+            <div class="profile-avatar" id="profileAvatar">?</div>
+            <h2 class="profile-name" id="profileName">Загрузка...</h2>
+            <p class="profile-email" id="profileEmail">-</p>
+            <p class="profile-birthdate" id="profileBirthdate">-</p>
+            <div class="profile-actions">
+                <a href="/dashboard" class="btn btn-primary">Личный кабинет</a>
+                <button class="btn btn-secondary" id="closeProfile">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/common.js"></script>
+    <script>
+        // Создание снежинок
+        function createSnowflakes() {
+            const snowflakesContainer = document.getElementById('snowflakes');
+            const snowflakeSymbols = ['❄', '❅', '❆'];
+            
+            for (let i = 0; i < 50; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.innerHTML = snowflakeSymbols[Math.floor(Math.random() * snowflakeSymbols.length)];
+                snowflake.style.left = Math.random() * 100 + '%';
+                snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
+                snowflake.style.opacity = Math.random();
+                snowflake.style.fontSize = Math.random() * 10 + 10 + 'px';
+                snowflake.style.animationDelay = Math.random() * 2 + 's';
+                snowflakesContainer.appendChild(snowflake);
+            }
+        }
+
+        // Проверка дня рождения при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            createSnowflakes();
+            checkBirthday();
+            updateProfileButton();
+        });
+        
+        // Обновление кнопки профиля
+        async function updateProfileButton() {
+            if (isAuthenticated()) {
+                try {
+                    const response = await apiRequest('/user/profile');
+                    const user = response.user;
+                    
+                    // Обновляем текст кнопки
+                    document.getElementById('profileBtnText').textContent = user.fullName.split(' ')[0];
+                } catch (error) {
+                    console.error('Ошибка загрузки профиля:', error);
+                }
+            }
+        }
+        
+        // Открытие модального окна профиля
+        document.getElementById('profileBtn').addEventListener('click', async function() {
+            if (!isAuthenticated()) {
+                redirect('/login');
+                return;
+            }
+            
+            const modal = document.getElementById('profileModal');
+            
+            try {
+                const response = await apiRequest('/user/profile');
+                const user = response.user;
+                
+                // Обновляем данные в модальном окне
+                document.getElementById('profileName').textContent = user.fullName;
+                document.getElementById('profileEmail').textContent = user.email;
+                document.getElementById('profileBirthdate').textContent = 'Дата рождения: ' + formatDate(user.birthDate);
+                
+                // Устанавливаем инициалы в аватар
+                const initials = user.fullName
+                    .split(' ')
+                    .map(word => word.charAt(0))
+                    .join('')
+                    .toUpperCase()
+                    .slice(0, 2);
+                document.getElementById('profileAvatar').textContent = initials;
+                
+                // Показываем модальное окно
+                modal.classList.add('active');
+                
+            } catch (error) {
+                console.error('Ошибка загрузки профиля:', error);
+                showMessage('Ошибка загрузки профиля', 'error');
+            }
+        });
+        
+        // Закрытие модального окна профиля
+        document.getElementById('closeProfile').addEventListener('click', function() {
+            document.getElementById('profileModal').classList.remove('active');
+        });
+        
+        // Закрытие модального окна при клике вне его
+        document.getElementById('profileModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+            }
+        });
+        
+        // Закрытие модального окна по Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.getElementById('profileModal').classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        /* Дополнительные стили для главной страницы */
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color), #0a2f7a);
+            color: white;
+            padding: 6rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/><circle cx="50" cy="50" r="30" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/><circle cx="50" cy="50" r="20" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></svg>');
+            background-size: 100px 100px;
+            opacity: 0.3;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 1s ease;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease 0.2s;
+            animation-fill-mode: both;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 0.4s;
+            animation-fill-mode: both;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .features-section {
+            padding: 4rem 0;
+            background-color: var(--background-color);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+        
+        .feature-title {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .feature-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        /* Кнопка профиля в углу */
+        .profile-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--white-color);
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.7rem 1.2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .profile-button:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* Модальное окно профиля */
+        .profile-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .profile-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .profile-content {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+        
+        .profile-modal.active .profile-content {
+            transform: scale(1);
+        }
+        
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .profile-name {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-email {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .profile-birthdate {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+        
+        .profile-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .profile-button {
+                top: 10px;
+                right: 10px;
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Кнопка профиля -->
+    <button class="profile-button" id="profileBtn">
+        <span id="profileBtnText">Профиль</span>
+    </button>
+
+    <!-- Hero секция -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Добро пожаловать!</h1>
+                <p class="hero-subtitle">Создайте свой профиль и получайте поздравления в особенный день</p>
+                <div class="hero-buttons">
+                    <a href="/register" class="btn btn-accent" style="font-size: 1.1rem; padding: 1rem 2rem;">
+                        Создать профиль
+                    </a>
+                    <a href="/login" class="btn btn-secondary" style="font-size: 1.1rem; padding: 1rem 2rem;">
+                        Войти
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция возможностей -->
+    <section class="features-section">
+        <div class="container">
+            <h2 style="text-align: center; font-size: 2.5rem; color: var(--primary-color); margin-bottom: 1rem;">
+                Возможности
+            </h2>
+            <p style="text-align: center; color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 3rem;">
+                Узнайте, что мы предлагаем для наших пользователей
+            </p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎂</div>
+                    <h3 class="feature-title">Поздравления</h3>
+                    <p class="feature-description">
+                        Получайте красивые поздравления в свой день рождения с персональными сообщениями
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">👤</div>
+                    <h3 class="feature-title">Персональный профиль</h3>
+                    <p class="feature-description">
+                        Создайте свой уникальный профиль с важной информацией и настройками
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Статистика</h3>
+                    <p class="feature-description">
+                        Отслеживайте важные даты и получайте уведомления о предстоящих событиях
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Модальное окно профиля -->
+    <div class="profile-modal" id="profileModal">
+        <div class="profile-content">
+            <div class="profile-avatar" id="profileAvatar">?</div>
+            <h2 class="profile-name" id="profileName">Загрузка...</h2>
+            <p class="profile-email" id="profileEmail">-</p>
+            <p class="profile-birthdate" id="profileBirthdate">-</p>
+            <div class="profile-actions">
+                <a href="/dashboard" class="btn btn-primary">Личный кабинет</a>
+                <button class="btn btn-secondary" id="closeProfile">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/common.js"></script>
+    <script>
+        // Проверка дня рождения при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            checkBirthday();
+            updateProfileButton();
+        });
+        
+        // Обновление кнопки профиля
+        async function updateProfileButton() {
+            if (isAuthenticated()) {
+                try {
+                    const response = await apiRequest('/user/profile');
+                    const user = response.user;
+                    
+                    // Обновляем текст кнопки
+                    document.getElementById('profileBtnText').textContent = user.fullName.split(' ')[0];
+                } catch (error) {
+                    console.error('Ошибка загрузки профиля:', error);
+                }
+            }
+        }
+        
+        // Открытие модального окна профиля
+        document.getElementById('profileBtn').addEventListener('click', async function() {
+            if (!isAuthenticated()) {
+                redirect('/login');
+                return;
+            }
+            
+            const modal = document.getElementById('profileModal');
+            
+            try {
+                const response = await apiRequest('/user/profile');
+                const user = response.user;
+                
+                // Обновляем данные в модальном окне
+                document.getElementById('profileName').textContent = user.fullName;
+                document.getElementById('profileEmail').textContent = user.email;
+                document.getElementById('profileBirthdate').textContent = 'Дата рождения: ' + formatDate(user.birthDate);
+                
+                // Устанавливаем инициалы в аватар
+                const initials = user.fullName
+                    .split(' ')
+                    .map(word => word.charAt(0))
+                    .join('')
+                    .toUpperCase()
+                    .slice(0, 2);
+                document.getElementById('profileAvatar').textContent = initials;
+                
+                // Показываем модальное окно
+                modal.classList.add('active');
+                
+            } catch (error) {
+                console.error('Ошибка загрузки профиля:', error);
+                showMessage('Ошибка загрузки профиля', 'error');
+            }
+        });
+        
+        // Закрытие модального окна профиля
+        document.getElementById('closeProfile').addEventListener('click', function() {
+            document.getElementById('profileModal').classList.remove('active');
+        });
+        
+        // Закрытие модального окна при клике вне его
+        document.getElementById('profileModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+            }
+        });
+        
+        // Закрытие модального окна по Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.getElementById('profileModal').classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
